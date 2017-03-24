@@ -1,5 +1,6 @@
 package com.hint.paranoid.aadharudhaar;
 
+import android.content.Intent;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.ParseException;
@@ -48,6 +49,8 @@ public class AddLendActivity extends AppCompatActivity {
             public void onClick(View v) {
                 getInput();
                 saveInput();
+                Intent intent = new Intent(AddLendActivity.this, LendActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -107,6 +110,7 @@ public class AddLendActivity extends AppCompatActivity {
                 int month_x=cal.get(Calendar.MONTH);
                 int day_x=cal.get(Calendar.DAY_OF_MONTH);
                 int week_x=cal.get(Calendar.WEEK_OF_YEAR);
+                Toast.makeText(this, dateString, Toast.LENGTH_SHORT).show();
                 mydatabase.execSQL("INSERT INTO lend(name,phone,amount,interest,day,date,month,year,comments,uid,address,state,pin) VALUES('"+nameString+"'," +
                         "'"+phoneString+"',"+amtInt+","+interestInt+",'"+dateString+"',"+day_x+","+month_x+","+year_x+",'"+commentString+"','"+uidString+"','"+addrString+"','"+stateString+"',"+pinInt+");");
                 Toast.makeText(this, "Success!", Toast.LENGTH_SHORT).show();
