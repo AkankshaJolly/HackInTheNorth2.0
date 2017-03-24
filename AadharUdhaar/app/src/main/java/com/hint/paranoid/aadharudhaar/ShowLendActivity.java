@@ -1,5 +1,6 @@
 package com.hint.paranoid.aadharudhaar;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
@@ -24,18 +25,18 @@ public class ShowLendActivity extends AppCompatActivity {
         setContentView(R.layout.activity_show_lend);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
+        position = Integer.parseInt(getIntent().getExtras().getString("position"))+1;
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
 
+                Intent intent = new Intent(ShowLendActivity.this,EditLendActivity.class);
+                intent.putExtra("position",Integer.toString(position));
+                startActivity(intent);
             }
         });
         loadTextViews();
-        position = Integer.parseInt(getIntent().getExtras().getString("position"))+1;
         DBConnect();
         displayData();
 
@@ -73,7 +74,7 @@ public class ShowLendActivity extends AppCompatActivity {
             nametv.setText(name);
             phonetv.setText(phone);
             amttv.setText(amount);
-            interesttv.setText(interest);
+            interesttv.setText(interest+" %");
             commenttv.setText(comments);
             datetv.setText(date);
             uidtv.setText(uid);

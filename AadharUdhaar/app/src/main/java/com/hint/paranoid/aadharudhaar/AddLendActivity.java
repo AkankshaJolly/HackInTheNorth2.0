@@ -255,7 +255,7 @@ public class AddLendActivity extends AppCompatActivity {
                 int day_x=cal.get(Calendar.DAY_OF_MONTH);
                 int week_x=cal.get(Calendar.WEEK_OF_YEAR);
                 Toast.makeText(this, dateString, Toast.LENGTH_SHORT).show();
-                mydatabase.execSQL("INSERT INTO lend(name,phone,amount,interest,day,date,month,year,comments,uid,address,state,pin) VALUES('"+nameString+"'," +
+                mydatabase.execSQL("INSERT INTO lend(name,phone,amount,interest,date,day,month,year,comments,uid,address,state,pin) VALUES('"+nameString+"'," +
                         "'"+phoneString+"',"+amtInt+","+interestInt+",'"+dateString+"',"+day_x+","+month_x+","+year_x+",'"+commentString+"','"+uidString+"','"+addrString+"','"+stateString+"',"+pinInt+");");
                 Toast.makeText(this, "Success!", Toast.LENGTH_SHORT).show();
                 Toast.makeText(this, dateString, Toast.LENGTH_SHORT).show();
@@ -334,4 +334,5 @@ public class AddLendActivity extends AppCompatActivity {
             return false;
         }
     }
+
 }

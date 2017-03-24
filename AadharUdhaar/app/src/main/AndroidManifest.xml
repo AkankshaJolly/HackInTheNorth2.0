@@ -37,14 +37,16 @@
         <activity
             android:name=".ShowLendActivity"
             android:label="@string/title_activity_show_lend"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".barchart" />
         <activity android:name=".piechart" />
         <activity android:name=".linechart" />
         <activity
             android:name=".ShowBorrowActivity"
             android:label="@string/title_activity_show_borrow"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".EditBorrowActivity" />
+        <activity android:name=".EditLendActivity"></activity>
     </application>
 
 </manifest>
