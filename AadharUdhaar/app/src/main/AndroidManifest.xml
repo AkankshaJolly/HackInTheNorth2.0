@@ -26,6 +26,11 @@
             android:name=".LendActivity"
             android:label="@string/title_activity_lend"
             android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".AddUserActivity"
+            android:label="@string/title_activity_addor_edit_lend"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+
     </application>
 
 </manifest>
