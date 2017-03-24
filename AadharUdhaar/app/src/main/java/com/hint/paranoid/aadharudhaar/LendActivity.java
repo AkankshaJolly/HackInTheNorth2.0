@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -50,21 +51,24 @@ public class LendActivity extends AppCompatActivity  {
         });
         DBConnect();
         createList();
-
-        lview.setOnItemClickListener(new android.widget.AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(android.widget.AdapterView<?> parent,
-                                    View view, int position, long id) {
-               Intent intent = new Intent(LendActivity.this,ShowLendActivity.class);
-                intent.putExtra("position",Integer.toString(position));
-                startActivity(intent);
-            }
-        });
+        if(lview!=null) {
+            lview.setOnItemClickListener(new android.widget.AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(android.widget.AdapterView<?> parent,
+                                        View view, int position, long id) {
+                    Intent intent = new Intent(LendActivity.this, ShowLendActivity.class);
+                    intent.putExtra("position", Integer.toString(position));
+                    startActivity(intent);
+                }
+            });
+        }
 
 
     }
     private void DBConnect() {
         mydatabase = openOrCreateDatabase("MoneyDB",MODE_PRIVATE,null);
+        mydatabase.execSQL("CREATE TABLE IF NOT EXISTS " +
+                "lend(id INTEGER PRIMARY KEY AUTOINCREMENT,name varchar NOT NULL,phone varchar NOT NULL,amount integer NOT NULL,interest integer,date varchar NOT NULL,day integer,month integer,year integer,comments varchar,uid varchar,address varchar,state varchar,pin integer);");
     }
 
     private void createList() {
@@ -76,8 +80,9 @@ public class LendActivity extends AppCompatActivity  {
                     int pid = resultSet.getInt(0);
                     String name = resultSet.getString(1);
                     String amt = resultSet.getString(3);
-                    String date = resultSet.getString(5);
-                    arrayList.add(new RowData(name,amt,date));
+                    String dd = resultSet.getString(5);
+                    Log.d("~~~~~~~~~~~~~",dd);
+                    arrayList.add(new RowData(name,amt,dd));
                 }while(resultSet.moveToNext());
                 lview = (ListView) findViewById(R.id.lendList);
                 ListViewAdapter adapter = new ListViewAdapter(this, arrayList);

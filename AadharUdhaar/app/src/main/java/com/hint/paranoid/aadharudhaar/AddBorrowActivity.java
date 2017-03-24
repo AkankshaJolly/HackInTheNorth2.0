@@ -1,5 +1,6 @@
 package com.hint.paranoid.aadharudhaar;
 
+import android.content.Intent;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.ParseException;
@@ -26,6 +27,7 @@ public class AddBorrowActivity extends AppCompatActivity {
     SQLiteDatabase mydatabase;
     int year_x,month_x,day_x,week_x;
     private Button save;
+    int flag=0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +50,10 @@ public class AddBorrowActivity extends AppCompatActivity {
             public void onClick(View v) {
                 getInput();
                 saveInput();
+                if(flag == 0) {
+                    Intent intent = new Intent(AddBorrowActivity.this, MainActivity.class);
+                    startActivity(intent);
+                }
             }
         });
     }
@@ -152,6 +158,7 @@ public class AddBorrowActivity extends AppCompatActivity {
             comment.setText("");
             date.setText("");
             Toast.makeText(this, "Invalid entry", Toast.LENGTH_SHORT).show();
+            flag = 1;
         }
     }
     private boolean validate() {

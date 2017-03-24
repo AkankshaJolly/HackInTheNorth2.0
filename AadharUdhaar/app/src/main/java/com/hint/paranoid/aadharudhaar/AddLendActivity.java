@@ -1,14 +1,18 @@
 package com.hint.paranoid.aadharudhaar;
 
+import android.Manifest;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.ParseException;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -18,6 +22,15 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
+
+import org.xmlpull.v1.XmlPullParser;
+import org.xmlpull.v1.XmlPullParserException;
+import org.xmlpull.v1.XmlPullParserFactory;
+
+import java.io.IOException;
+import java.io.StringReader;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -33,6 +46,11 @@ public class AddLendActivity extends AppCompatActivity {
     private TextView result_tv;
     Button btn;
     static final int DIALOG_ID=0;
+
+    private int PERMISSION_FOR_CAMERA=123;
+
+    private String name_scan,uid_scan,address_scan,state_scan,pincode_scan;
+    int flag=0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,10 +68,17 @@ public class AddLendActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                IntentIntegrator integrator = new IntentIntegrator(AddLendActivity.this);
+                integrator.setDesiredBarcodeFormats(IntentIntegrator.QR_CODE_TYPES);
+                integrator.setPrompt("Scan a Aadharcard QR Code");
+                integrator.setResultDisplayDuration(500);
+                integrator.setCameraId(0);
+                integrator.initiateScan();
             }
         });
+
+        grantPermissionForCamera();
+
         loadTextViews();
         createDB();
         //Buttons --------------------------------
@@ -63,14 +88,93 @@ public class AddLendActivity extends AppCompatActivity {
             public void onClick(View v) {
                 getInput();
                 saveInput();
-                Intent intent = new Intent(AddLendActivity.this, LendActivity.class);
-                startActivity(intent);
+                if(flag == 0) {
+                    Intent intent = new Intent(AddLendActivity.this, MainActivity.class);
+                    startActivity(intent);
+                }
             }
         });
+    }
 
+    private void grantPermissionForCamera() {
 
+        if (ContextCompat.checkSelfPermission(AddLendActivity.this, Manifest.permission.CAMERA)
+                != PackageManager.PERMISSION_GRANTED) {
+            if (!ActivityCompat.shouldShowRequestPermissionRationale(AddLendActivity.this,
+                    Manifest.permission.CAMERA)) {
+                ActivityCompat.requestPermissions(AddLendActivity.this,
+                        new String[]{Manifest.permission.CAMERA},
+                        PERMISSION_FOR_CAMERA);
+            }
+        }
 
     }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+
+        if(requestCode==PERMISSION_FOR_CAMERA) {
+            if (grantResults.length > 0
+                    && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(getBaseContext(),"PERMISSION GRANTED",Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(getBaseContext(),"PERMISSION NOT GRANTED",Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    public void onActivityResult(int requestCode, int resultCode, Intent intent) {
+        IntentResult scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
+        if (scanResult != null) {
+            String data = scanResult.getContents();
+            if(data != null && !data.isEmpty()){
+                displayInfo(data);
+            }else{
+                Toast toast = Toast.makeText(getApplicationContext(),"Scan Cancelled", Toast.LENGTH_SHORT);
+                toast.show();
+            }
+
+        }else{
+            Toast toast = Toast.makeText(getApplicationContext(),"No scan data received!", Toast.LENGTH_SHORT);
+            toast.show();
+        }
+    }
+
+    private void displayInfo(String data) {
+        XmlPullParserFactory pullParserFactory;
+        try {
+            pullParserFactory = XmlPullParserFactory.newInstance();
+            XmlPullParser parser = pullParserFactory.newPullParser();
+
+            parser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false);
+            parser.setInput(new StringReader(data));
+
+            int eventType = parser.getEventType();
+            while (eventType != XmlPullParser.END_DOCUMENT) {
+                if(eventType == XmlPullParser.START_TAG && "PrintLetterBarcodeData".equals(parser.getName())) {
+
+                    uid_scan = parser.getAttributeValue(null,"uid");
+                    name_scan = parser.getAttributeValue(null,"name");
+                    address_scan = parser.getAttributeValue(null,"dist");
+                    state_scan = parser.getAttributeValue(null,"state");
+                    pincode_scan = parser.getAttributeValue(null,"pc");
+                }
+                eventType = parser.next();
+            }
+        } catch (XmlPullParserException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        name.setText(name_scan);
+        uid.setText(uid_scan);
+        addr.setText(address_scan);
+        state.setText(state_scan);
+        pin.setText(pincode_scan);
+
+    }
+
     @Override
     protected Dialog onCreateDialog(int id){
         if(id==DIALOG_ID){
@@ -138,7 +242,7 @@ public class AddLendActivity extends AppCompatActivity {
         dateString = date.getText().toString();
         //Toast.makeText(this, nameString, Toast.LENGTH_SHORT).show();
        // Toast.makeText(this, Integer.toString(amtInt), Toast.LENGTH_SHORT).show();
-       // Toast.makeText(this, dateString, Toast.LENGTH_SHORT).show();
+      //  Toast.makeText(this, dateString, Toast.LENGTH_SHORT).show();
     }
     private void saveInput()
     {
@@ -154,6 +258,7 @@ public class AddLendActivity extends AppCompatActivity {
                 mydatabase.execSQL("INSERT INTO lend(name,phone,amount,interest,day,date,month,year,comments,uid,address,state,pin) VALUES('"+nameString+"'," +
                         "'"+phoneString+"',"+amtInt+","+interestInt+",'"+dateString+"',"+day_x+","+month_x+","+year_x+",'"+commentString+"','"+uidString+"','"+addrString+"','"+stateString+"',"+pinInt+");");
                 Toast.makeText(this, "Success!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, dateString, Toast.LENGTH_SHORT).show();
             }catch (SQLException e)
             {
                 e.printStackTrace();
@@ -173,6 +278,7 @@ public class AddLendActivity extends AppCompatActivity {
             pin.setText("");
             date.setText("");
             Toast.makeText(this, "Invalid entry", Toast.LENGTH_SHORT).show();
+            flag = 1;
         }
 
     }
