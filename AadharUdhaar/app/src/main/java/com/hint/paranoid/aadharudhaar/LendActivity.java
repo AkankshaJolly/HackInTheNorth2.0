@@ -56,7 +56,7 @@ public class LendActivity extends AppCompatActivity  {
             public void onItemClick(android.widget.AdapterView<?> parent,
                                     View view, int position, long id) {
                 Toast.makeText(getApplicationContext(),
-                        arrayList.get(position).nameLend, Toast.LENGTH_LONG).show();
+                        Integer.toString(position), Toast.LENGTH_LONG).show();
             }
         });
 
