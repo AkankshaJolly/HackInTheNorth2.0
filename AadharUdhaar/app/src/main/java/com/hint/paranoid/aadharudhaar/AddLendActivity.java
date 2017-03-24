@@ -1,5 +1,7 @@
 package com.hint.paranoid.aadharudhaar;
 
+import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.content.Intent;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
@@ -11,12 +13,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 public class AddLendActivity extends AppCompatActivity {
     SQLiteDatabase mydatabase;
@@ -24,11 +29,20 @@ public class AddLendActivity extends AppCompatActivity {
     private String nameString,phoneString,commentString,uidString,addrString,stateString,dateString,amtString,interestString,pinString;
     private int amtInt, interestInt, pinInt;
     private Button save;
+    int year_x,month_x,day_x,week_x,curr_year,curr_month,curr_day;
+    private TextView result_tv;
+    Button btn;
+    static final int DIALOG_ID=0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_user);
+        final Calendar cal = Calendar.getInstance();
+        curr_year=year_x=cal.get(Calendar.YEAR);
+        curr_month=month_x=cal.get(Calendar.MONTH) ;
+        curr_day=day_x=cal.get(Calendar.DAY_OF_MONTH);
+        week_x=cal.get(Calendar.WEEK_OF_YEAR);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -57,6 +71,32 @@ public class AddLendActivity extends AppCompatActivity {
 
 
     }
+    @Override
+    protected Dialog onCreateDialog(int id){
+        if(id==DIALOG_ID){
+            return new DatePickerDialog(this,dpickerListner,year_x,month_x,day_x);
+
+        }
+        return null;
+    }
+    private DatePickerDialog.OnDateSetListener dpickerListner
+            = new DatePickerDialog.OnDateSetListener() {
+
+        @Override
+        public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+            year_x=year;
+            month_x=monthOfYear ;
+            day_x=dayOfMonth;
+            Calendar c =new GregorianCalendar();
+            c.set(Calendar.YEAR,year_x);
+            c.set(Calendar.MONTH,monthOfYear);
+            c.set(Calendar.DAY_OF_MONTH,day_x);
+            week_x = c.get(Calendar.WEEK_OF_YEAR);
+            Toast.makeText(AddLendActivity.this, day_x + "/" + month_x + "/" + year_x + "/" + week_x, Toast.LENGTH_LONG).show();
+            result_tv.setText(day_x + "/" + month_x + "/" + year_x);
+            //duedate=(String)result_tv.getText();
+        }
+    };
     private void createDB()
     {
         mydatabase = openOrCreateDatabase("MoneyDB", MODE_PRIVATE, null);

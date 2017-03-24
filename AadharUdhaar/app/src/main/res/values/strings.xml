@@ -26,4 +26,5 @@
     <string name="title_activity_add_borrow">AddBorrowActivity</string>
     <string name="lend_name">enter your name here</string>
     <string name="lend_ph_no">phone number</string>
+    <string name="title_activity_show_lend">ShowLendActivity</string>
 </resources>

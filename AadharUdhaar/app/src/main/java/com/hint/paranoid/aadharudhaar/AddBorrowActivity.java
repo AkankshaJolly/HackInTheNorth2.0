@@ -11,6 +11,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.text.DateFormat;
@@ -19,9 +20,11 @@ import java.util.Calendar;
 
 public class AddBorrowActivity extends AppCompatActivity {
     private EditText name,phone,amt,interest,comment,date;
+    private TextView datex;
     private String nameString,phoneString,commentString,dateString,amtString,interestString;
     private int amtInt, interestInt;
     SQLiteDatabase mydatabase;
+    int year_x,month_x,day_x,week_x;
     private Button save;
 
     @Override
@@ -32,6 +35,13 @@ public class AddBorrowActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         loadTextViews();
         createDB();
+       /* final Calendar cal = Calendar.getInstance();
+        year_x=cal.get(Calendar.YEAR);
+        month_x=cal.get(Calendar.MONTH) ;
+        day_x=cal.get(Calendar.DAY_OF_MONTH);
+
+        datex=(TextView)findViewById(R.id.date);
+        showDialogOnButtonClick();*/
         save = (Button) findViewById(R.id.save_borrow);
         save.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -41,6 +51,49 @@ public class AddBorrowActivity extends AppCompatActivity {
             }
         });
     }
+    /*
+     Button btn;
+    static final int DIALOG_ID=0;
+    public void showDialogOnButtonClick(){
+        btn = (Button)findViewById(R.id.cal);
+        btn.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        showDialog(DIALOG_ID);
+                    }
+                }
+
+        );
+    }
+     @Override
+    protected Dialog onCreateDialog(int id){
+        if(id==DIALOG_ID){
+            return new DatePickerDialog(this,dpickerListner,year_x,month_x,day_x);
+
+        }
+        return null;
+    }
+
+    private DatePickerDialog.OnDateSetListener dpickerListner
+            = new DatePickerDialog.OnDateSetListener() {
+
+        @Override
+        public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+            year_x=year;
+            month_x=monthOfYear ;
+            day_x=dayOfMonth;
+            Calendar c =new GregorianCalendar();
+            c.set(Calendar.YEAR,year_x);
+            c.set(Calendar.MONTH,monthOfYear);
+            c.set(Calendar.DAY_OF_MONTH,day_x);
+            week_x = c.get(Calendar.WEEK_OF_YEAR);
+            Toast.makeText(AddBorrowActivity.this, day_x + "/" + month_x + "/" + year_x + "/" + week_x, Toast.LENGTH_LONG).show();
+            datex.setText(day_x + "/" + month_x + "/" + year_x);
+            //duedate=(String)result_tv.getText();
+        }
+    };
+     */
 
     private void createDB() {
         mydatabase = openOrCreateDatabase("MoneyDB", MODE_PRIVATE, null);

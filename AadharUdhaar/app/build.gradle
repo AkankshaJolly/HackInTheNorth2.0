@@ -18,6 +18,13 @@ android {
         }
     }
 }
+repositories{
+    mavenCentral()
+    mavenLocal()
+    maven { url "https://jitpack.io" }
+
+}
+
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
@@ -29,4 +36,6 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile 'com.github.medyo:fancybuttons:1.8.3'
     compile 'com.github.markushi:circlebutton:1.1'
+    compile 'com.github.PhilJay:MPAndroidChart:v2.2.4'
+    compile 'com.android.support:design:25.2.0'
 }

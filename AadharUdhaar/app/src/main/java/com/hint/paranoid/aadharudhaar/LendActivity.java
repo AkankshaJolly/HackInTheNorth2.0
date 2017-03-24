@@ -55,8 +55,9 @@ public class LendActivity extends AppCompatActivity  {
             @Override
             public void onItemClick(android.widget.AdapterView<?> parent,
                                     View view, int position, long id) {
-                Toast.makeText(getApplicationContext(),
-                        Integer.toString(position), Toast.LENGTH_LONG).show();
+               Intent intent = new Intent(LendActivity.this,ShowLendActivity.class);
+                intent.putExtra("position",Integer.toString(position));
+                startActivity(intent);
             }
         });
 
@@ -68,7 +69,7 @@ public class LendActivity extends AppCompatActivity  {
 
     private void createList() {
         try {
-            resultSet = mydatabase.rawQuery("SELECT * FROM lend;", null);
+                resultSet = mydatabase.rawQuery("SELECT * FROM lend;", null);
             if(resultSet.moveToFirst())
             {
                 do{
