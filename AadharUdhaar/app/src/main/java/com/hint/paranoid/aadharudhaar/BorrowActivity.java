@@ -73,7 +73,7 @@ public class BorrowActivity extends AppCompatActivity {
                     arrayList.add(new RowData(name,amt,date));
                 }while(resultSet.moveToNext());
                 lview = (ListView) findViewById(R.id.borrowList);
-                ListViewAdapter adapter = new ListViewAdapter(this, arrayList);
+                ListViewAdapter adapter = new ListViewAdapter(this, arrayList,2);
                 lview.setAdapter(adapter);
             }
         }

@@ -20,10 +20,12 @@ public class ListViewAdapter extends BaseAdapter
     Activity context1;
     private ArrayList<RowData> rowText;
     String description[];
+    int type;
     public ListViewAdapter(Activity context,
-                             ArrayList<RowData> rowText) {
+                             ArrayList<RowData> rowText,int type) {
         context1 = context;
         this.rowText = rowText;
+        this.type = type;
     }
 
     @Override
@@ -46,8 +48,11 @@ public class ListViewAdapter extends BaseAdapter
         ViewHolder viewHolder = null;
 
         if (convertView == null) {
-            convertView = LayoutInflater.from(context1).inflate(
+            if(type == 1)convertView = LayoutInflater.from(context1).inflate(
                     R.layout.list_item_row, null);
+            else
+                convertView = LayoutInflater.from(context1).inflate(
+                        R.layout.list_item_row_borrow, null);
             viewHolder = new ViewHolder();
             viewHolder.txt1 = (TextView) convertView
                     .findViewById(R.id.name_lend);
@@ -61,7 +66,7 @@ public class ListViewAdapter extends BaseAdapter
         }
 
         viewHolder.txt1.setText(rowText.get(position).nameLend);
-        viewHolder.txt2.setText(rowText.get(position).moneyLend);
+        viewHolder.txt2.setText("\u20B9 "+rowText.get(position).moneyLend);
         viewHolder.txt3.setText(rowText.get(position).dateLend);
         return convertView;
     }

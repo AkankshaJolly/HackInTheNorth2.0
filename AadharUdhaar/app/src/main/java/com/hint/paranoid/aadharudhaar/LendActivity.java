@@ -85,7 +85,7 @@ public class LendActivity extends AppCompatActivity  {
                     arrayList.add(new RowData(name,amt,dd));
                 }while(resultSet.moveToNext());
                 lview = (ListView) findViewById(R.id.lendList);
-                ListViewAdapter adapter = new ListViewAdapter(this, arrayList);
+                ListViewAdapter adapter = new ListViewAdapter(this, arrayList,1);
                 lview.setAdapter(adapter);
             }
         }

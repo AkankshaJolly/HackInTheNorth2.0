@@ -1,6 +1,7 @@
 package com.hint.paranoid.aadharudhaar;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -12,11 +13,18 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.majeur.cling.Cling;
+import com.majeur.cling.ClingManager;
+import com.majeur.cling.ViewTarget;
+
 import mehdi.sakout.fancybuttons.FancyButton;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     private FancyButton borrowButton, lendButton;
+    private ClingManager mClingManager;
+    String START_TUTORIAL_KEY="showcase";
+    String SHOW_CASE="showCase";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,8 +65,8 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void loadButtons() {
-        borrowButton = (FancyButton) findViewById(R.id.i_owe_you);
-        lendButton = (FancyButton) findViewById(R.id.you_owe_me);
+        borrowButton = (FancyButton) findViewById(R.id.borrow);
+        lendButton = (FancyButton) findViewById(R.id.lend);
     }
 
 
@@ -108,7 +116,8 @@ public class MainActivity extends AppCompatActivity
             Intent intent = new Intent(MainActivity.this, barchart.class);
             startActivity(intent);
 
-        } else if (id == R.id.nav_slideshow) {
+        } else if (id == R.id.nav_help) {
+            StartTutorial();
 
         } else if (id == R.id.nav_manage) {
 
@@ -121,5 +130,51 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+    void StartTutorial()
+    {
+        mClingManager = new ClingManager(this);
+
+        // When no Target is set, Target.NONE is used
+        mClingManager.addCling(new Cling.Builder(this)
+                .setTitle("Welcome to Aadhaar Udhaar!")
+                .setContent("A modern day borrow / lend record maintenance app that uses Aadhaar for verification. ")
+                .build());
+
+        mClingManager.addCling(new Cling.Builder(this)
+                .setTitle("Your Borrow Records")
+                .setContent("Maintain records of people from whom you borrowed.")
+                .setMessageBackground(Color.rgb(255,152,0))
+                .setTarget(new ViewTarget(this, R.id.borrow))
+                .build());
+
+        mClingManager.addCling(new Cling.Builder(this)
+                .setTitle("Your Lend Records")
+                .setContent("Maintain records of people who borrowed from you.")
+                .setMessageBackground(Color.rgb(3,155,229))
+                .setTarget(new ViewTarget(this, R.id.lend))
+                .build());
+
+        mClingManager.setCallbacks(new ClingManager.Callbacks() {
+            @Override
+            public boolean onClingClick(int position) {
+
+                return false;
+            }
+
+            @Override
+            public void onClingShow(int position) {
+                //Toast.makeText(MainActivity.this, "Cling #" + position + " is shown", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onClingHide(int position) {
+                // Toast.makeText(MainActivity.this, "Cling #" + position + " is hidden", Toast.LENGTH_SHORT).show();
+
+                // Last Cling has been shown, tutorial is ended.
+            }
+        });
+
+        mClingManager.start();
     }
 }

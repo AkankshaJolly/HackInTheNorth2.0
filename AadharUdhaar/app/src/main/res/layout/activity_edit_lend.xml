@@ -33,13 +33,6 @@
                     android:layout_height="wrap_content"
                     android:hint="@string/lend_name" />
 
-                <at.markushi.ui.CircleButton
-                    android:layout_width="64dip"
-                    android:layout_height="64dip"
-                    android:layout_weight="0.33"
-                    app:cb_color="#6200EA"
-                    app:cb_pressedRingWidth="8dip" />
-
             </LinearLayout>
 
             <EditText android:id="@+id/lend_phone_edit"
@@ -177,6 +170,8 @@
                 android:id="@+id/update_lend_edit"
                 android:layout_height="wrap_content"
                 android:layout_width="0dp"
+                android:textColor="#fff"
+                android:background="@drawable/button_custom"
                 android:layout_weight="1"
                 android:layout_margin="12dp"
                 android:paddingBottom="10dp"

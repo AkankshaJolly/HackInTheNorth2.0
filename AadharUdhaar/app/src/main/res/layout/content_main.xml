@@ -17,12 +17,12 @@
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/i_owe_you"
+        android:layout_above="@+id/borrow"
         android:layout_centerHorizontal="true"
         android:src="@drawable/front_image"/>
 
     <mehdi.sakout.fancybuttons.FancyButton
-        android:id="@+id/i_owe_you"
+        android:id="@+id/borrow"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
@@ -40,10 +40,10 @@
         fancy:fb_text="Borrow"
         fancy:fb_textColor="#FFFFFF" />
     <mehdi.sakout.fancybuttons.FancyButton
-        android:id="@+id/you_owe_me"
+        android:id="@+id/lend"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/i_owe_you"
+        android:layout_below="@+id/borrow"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
         android:paddingBottom="10dp"

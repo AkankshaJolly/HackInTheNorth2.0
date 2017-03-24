@@ -29,16 +29,29 @@
                 <TextView android:id="@+id/borrow_name"
                     android:layout_width="0dp"
                     android:layout_weight="3"
+                    android:textSize="28dp"
+                    android:textStyle="bold"
+                    android:textColor="#000"
                     android:layout_height="wrap_content"
                     />
 
 
 
             </LinearLayout>
+            <TextView android:text="@string/phone_head"
+
+                android:layout_width="match_parent"
+                android:textColor="#000"
+                android:textSize="20dp"
+                android:layout_height="wrap_content"
+                style="?android:listSeparatorTextViewStyle"
+                />
 
             <TextView android:id="@+id/borrow_phone"
                 android:layout_marginBottom="8dp"
                 android:layout_width="match_parent"
+                android:textColor="#000"
+                android:textSize="20dp"
                 android:layout_height="wrap_content"
                 />
 
@@ -48,6 +61,8 @@
         <TextView android:text="@string/amount"
 
             android:layout_width="match_parent"
+            android:textColor="#000"
+            android:textSize="20dp"
             android:layout_height="wrap_content"
             style="?android:listSeparatorTextViewStyle"
             />
@@ -59,6 +74,8 @@
 
             <TextView android:id="@+id/amt_borrow"
                 android:layout_width="match_parent"
+                android:textColor="#000"
+                android:textSize="20dp"
                 android:layout_height="wrap_content"
                 />
         </LinearLayout>
@@ -66,6 +83,8 @@
         <TextView android:text="@string/interest"
 
             android:layout_width="match_parent"
+            android:textColor="#000"
+            android:textSize="20dp"
             android:layout_height="wrap_content"
             style="?android:listSeparatorTextViewStyle"
             />
@@ -76,6 +95,8 @@
 
             <TextView android:id="@+id/interest_borrow"
                 android:layout_width="match_parent"
+                android:textColor="#000"
+                android:textSize="20dp"
                 android:layout_height="wrap_content"
 
                 />
@@ -83,6 +104,8 @@
 
         <TextView android:text="@string/due_date"
             android:layout_width="match_parent"
+            android:textColor="#000"
+            android:textSize="20dp"
             android:layout_height="wrap_content"
             style="?android:listSeparatorTextViewStyle" />
 
@@ -94,6 +117,8 @@
 
             <TextView android:id="@+id/date_borrow"
                 android:layout_width="match_parent"
+                android:textColor="#000"
+                android:textSize="20dp"
                 android:layout_height="wrap_content"
                 />
 
@@ -102,6 +127,8 @@
         <TextView android:text="@string/comments"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textColor="#000"
+            android:textSize="20dp"
             style="?android:listSeparatorTextViewStyle" />
 
         <LinearLayout android:layout_width="match_parent"
@@ -111,6 +138,8 @@
 
             <TextView
                 android:id="@+id/comments_borrow"
+                android:textColor="#000"
+                android:textSize="20dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
@@ -127,6 +156,8 @@
 
             <Button
                 android:id="@+id/paid_borrow"
+                android:textColor="#fff"
+                android:background="@drawable/button_custom"
                 android:layout_height="wrap_content"
                 android:layout_width="0dp"
                 android:layout_weight="1"

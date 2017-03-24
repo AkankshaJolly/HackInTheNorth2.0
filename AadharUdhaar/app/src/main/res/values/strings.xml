@@ -28,4 +28,7 @@
     <string name="lend_ph_no">phone number</string>
     <string name="title_activity_show_lend">ShowLendActivity</string>
     <string name="title_activity_show_borrow">ShowBorrowActivity</string>
+    <string name="Rs">\u20B9</string>
+    <string name="name_head">Name</string>
+    <string name="phone_head">Phone</string>
 </resources>

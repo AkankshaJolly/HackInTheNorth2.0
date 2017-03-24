@@ -45,4 +45,5 @@ dependencies {
     compile 'com.journeyapps:zxing-android-integration:2.0.1@aar'
 
     compile 'com.google.zxing:core:3.0.1'
+    compile 'com.majeur.cling:cling:1.1'
 }
