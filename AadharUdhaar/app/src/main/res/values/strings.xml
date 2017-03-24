@@ -23,4 +23,7 @@
     <string name="state">state</string>
     <string name="postal">postal code</string>
     <string name="date_format">dd/mm/yyyy</string>
+    <string name="title_activity_add_borrow">AddBorrowActivity</string>
+    <string name="lend_name">enter your name here</string>
+    <string name="lend_ph_no">phone number</string>
 </resources>

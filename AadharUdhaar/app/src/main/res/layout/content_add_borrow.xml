@@ -27,11 +27,11 @@
                 android:orientation="horizontal"
                 android:layout_marginBottom="8dp" >
 
-                <EditText android:id="@+id/lend_name"
+                <EditText android:id="@+id/borrow_name"
                     android:layout_width="0dp"
                     android:layout_weight="3"
                     android:layout_height="wrap_content"
-                    android:hint="@string/lend_name" />
+                    android:hint="@string/borrow_name" />
 
                 <at.markushi.ui.CircleButton
                     android:layout_width="64dip"
@@ -42,12 +42,12 @@
 
             </LinearLayout>
 
-            <EditText android:id="@+id/lend_phone"
+            <EditText android:id="@+id/borrow_phone"
                 android:inputType="phone"
                 android:layout_marginBottom="8dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/lend_ph_no" />
+                android:hint="@string/borrow_ph_no" />
 
 
         </LinearLayout>
@@ -64,7 +64,7 @@
             android:orientation="horizontal"
             android:padding="12dp">
 
-            <EditText android:id="@+id/amt_lend"
+            <EditText android:id="@+id/amt_borrow"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="numberDecimal"
@@ -82,7 +82,7 @@
             android:orientation="horizontal"
             android:padding="12dp">
 
-            <EditText android:id="@+id/interest_lend"
+            <EditText android:id="@+id/interest_borrow"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="numberDecimal"
@@ -100,7 +100,7 @@
             android:padding="12dp"
             >
 
-            <EditText android:id="@+id/date_lend"
+            <EditText android:id="@+id/date_borrow"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/date_format" />
@@ -118,52 +118,12 @@
             android:padding="12dp">
 
             <EditText
-                android:id="@+id/comments_lend"
+                android:id="@+id/comments_borrow"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:inputType="textMultiLine" >
             </EditText>
-
-        </LinearLayout>
-        <TextView android:text="@string/Authentication"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            style="?android:listSeparatorTextViewStyle" />
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="12dp">
-            <EditText
-                android:id="@+id/uid"
-                android:layout_margin="5dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="numberDecimal"
-                android:hint="@string/uid" />
-            <EditText
-                android:id="@+id/address"
-                android:layout_margin="5dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/address" />
-            <EditText
-                android:id="@+id/state"
-                android:layout_margin="5dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/state" />
-            <EditText
-                android:id="@+id/postal"
-                android:layout_margin="5dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="numberDecimal"
-                android:hint="@string/postal" />
-
-
-
 
         </LinearLayout>
 
@@ -174,7 +134,7 @@
             xmlns:fancy="http://schemas.android.com/tools">
 
             <Button
-                android:id="@+id/save_lend"
+                android:id="@+id/save_borrow"
                 android:layout_height="wrap_content"
                 android:layout_width="0dp"
                 android:layout_weight="1"
@@ -187,7 +147,7 @@
                 />
 
             <Button
-                android:id="@+id/Cancel_lend"
+                android:id="@+id/Cancel_borrow"
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="wrap_content"

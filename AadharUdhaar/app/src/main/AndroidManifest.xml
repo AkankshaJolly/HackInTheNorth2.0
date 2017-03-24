@@ -25,12 +25,15 @@
         <activity
             android:name=".LendActivity"
             android:label="@string/title_activity_lend"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".AddUserActivity"
+            android:name=".AddLendActivity"
             android:label="@string/title_activity_addor_edit_lend"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".AddBorrowActivity"
+            android:label="@string/title_activity_add_borrow"
             android:theme="@style/AppTheme.NoActionBar"></activity>
-
     </application>
 
 </manifest>
