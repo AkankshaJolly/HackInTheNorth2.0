@@ -22,6 +22,7 @@ This application is useful for people who run businesses like canteens, general 
 4. SMS / CALL feature in case of deadline crossed.
 5. Importing users from contacts.
 6. Material design user interface.
+7. Statistics in the form of graphs.
 
 
 # Development Platform
