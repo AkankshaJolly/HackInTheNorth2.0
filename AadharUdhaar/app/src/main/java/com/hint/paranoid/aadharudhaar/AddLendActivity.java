@@ -299,7 +299,7 @@ public class AddLendActivity extends AppCompatActivity {
             addr.setText("");
             state.setText("");
             pin.setText("");
-            date.setText("");
+            result_tv.setText("");
             Toast.makeText(this, "Invalid entry", Toast.LENGTH_SHORT).show();
             flag = 1;
         }
@@ -345,7 +345,7 @@ public class AddLendActivity extends AppCompatActivity {
     }
     public boolean isDateValid(String date)
     {
-        try {
+        /*try {
             DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
             df.setLenient(false);
             df.parse(date);
@@ -355,7 +355,17 @@ public class AddLendActivity extends AppCompatActivity {
         } catch (java.text.ParseException e) {
             e.printStackTrace();
             return false;
+        }*/
+        if(year_x==curr_year){
+            if(month_x==curr_month){
+                if(day_x<curr_day){
+                    return false;
+                }
+            }else if(month_x<curr_month)
+                return false;
         }
+        else if(year_x<curr_year)
+            return false;
+        return true;
     }
-
-}
+    }

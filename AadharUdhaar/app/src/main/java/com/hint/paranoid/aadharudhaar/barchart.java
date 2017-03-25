@@ -88,7 +88,7 @@ public class barchart extends ActionBarActivity {
 
         BarData data = new BarData(getXAxisValues(), getDataSet());
         chart.setData(data);
-        chart.setDescription("My Chart");
+        chart.setDescription("Statistics");
         chart.animateXY(2000, 2000);
         chart.invalidate();
 

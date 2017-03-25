@@ -92,12 +92,22 @@
             android:padding="12dp"
             >
 
-            <EditText android:id="@+id/date_borrow_edit"
-                android:layout_width="match_parent"
+            <TextView android:id="@+id/date_borrow_edit"
+                android:layout_width="0dp"
+                android:layout_weight="3"
                 android:layout_height="wrap_content"
                 android:hint="@string/date_format" />
+            <Button
+                android:id="@+id/cal_borrow_edit"
+                android:text="Date"
+                android:textColor="#fff"
+                android:background="@drawable/button_custom"
+                android:layout_width="0dp"
+                android:layout_weight="2"
+                android:layout_height="wrap_content" />
 
         </LinearLayout>
+
 
         <TextView android:text="@string/comments"
             android:layout_width="match_parent"

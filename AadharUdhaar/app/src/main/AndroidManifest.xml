@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.hint.paranoid.aadharudhaar">
+
     <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.SEND_SMS" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -46,18 +48,27 @@
             android:label="@string/title_activity_show_lend"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".barchart"  android:screenOrientation="portrait"/>
-        <activity android:name=".piechart"  android:screenOrientation="portrait" />
-        <activity android:name=".linechart"  android:screenOrientation="portrait"/>
+        <activity
+            android:name=".barchart"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".piechart"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".linechart"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ShowBorrowActivity"
             android:label="@string/title_activity_show_borrow"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".EditBorrowActivity"  android:screenOrientation="portrait"/>
-        <activity android:name=".EditLendActivity"  android:screenOrientation="portrait">
-
-        </activity>
+        <activity
+            android:name=".EditBorrowActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".EditLendActivity"
+            android:screenOrientation="portrait"></activity>
+        <activity android:name=".SaveAadhaarActivity"></activity>
     </application>
 
 </manifest>

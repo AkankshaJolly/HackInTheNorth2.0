@@ -121,9 +121,12 @@ public class MainActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_manage) {
 
-        } else if (id == R.id.nav_share) {
+        } else if (id == R.id.nav_save_aadhaar) {
+
 
         } else if (id == R.id.nav_send) {
+            Intent i=new Intent(MainActivity.this,SaveAadhaarActivity.class);
+            startActivity(i);
 
         }
 

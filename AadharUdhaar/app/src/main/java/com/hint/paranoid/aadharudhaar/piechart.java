@@ -58,7 +58,7 @@ public class piechart extends AppCompatActivity implements OnChartValueSelectedL
         }
         try {
 
-            resultset2= mydatabase.rawQuery("SELECT month,SUM(finalinterest) FROM borrow WHERE year="+curr_year+" AND paymonth!=-1 GROUP BY paymonth ;",null);
+            resultset2= mydatabase.rawQuery("SELECT paymonth,SUM(finalinterest) FROM borrow WHERE year="+curr_year+" AND paymonth!=-1 GROUP BY paymonth ;",null);
             Log.d("check2", resultset2.getCount() + "");
 
             Toast.makeText(this, "Success!", Toast.LENGTH_SHORT).show();
@@ -91,13 +91,17 @@ public class piechart extends AppCompatActivity implements OnChartValueSelectedL
             }while(resultset2.moveToNext());
         }
         ArrayList<Integer> colors = new ArrayList<Integer>();
+        ArrayList<String> xVals = new ArrayList<String>();
+        String months[]={"Jan","Feb","Mar","Apr","May","Jun","Jul","Jul","Aug","Sep","Oct","Nov","Dec"};
         for(int i=0;i<12;i++)
         {
             if(hash[i]<0) {
+                xVals.add(months[i]+"(loss)");
                 colors.add(Color.rgb(192, 0, 0));
                 yvalues.add(new Entry(-hash[i], i));
             }
-            else{
+            else if(hash[i]>0){
+                xVals.add(months[i]+"(profit)");
                 colors.add(Color.rgb(0,255,0));
                 yvalues.add(new Entry(hash[i], i));
             }
@@ -105,21 +109,10 @@ public class piechart extends AppCompatActivity implements OnChartValueSelectedL
         }
 
 
-        PieDataSet dataSet = new PieDataSet(yvalues, "Election Results");
+        PieDataSet dataSet = new PieDataSet(yvalues, "Revenue");
 
-        ArrayList<String> xVals = new ArrayList<String>();
 
-        xVals.add("January");
-        xVals.add("February");
-        xVals.add("March");
-        xVals.add("April");
-        xVals.add("May");
-        xVals.add("June");
-        xVals.add("July");
-        xVals.add("August");
-        xVals.add("September");
-        xVals.add("October");
-        xVals.add("November");
+
         xVals.add("December");
 
         PieData data = new PieData(xVals, dataSet);
@@ -131,7 +124,7 @@ public class piechart extends AppCompatActivity implements OnChartValueSelectedL
         pieChart.setTransparentCircleRadius(25f);
         pieChart.setHoleRadius(25f);
 
-        dataSet.setColors(colors);
+        dataSet.setColors(ColorTemplate.VORDIPLOM_COLORS);
         data.setValueTextSize(13f);
         data.setValueTextColor(Color.DKGRAY);
         pieChart.setOnChartValueSelectedListener(this);

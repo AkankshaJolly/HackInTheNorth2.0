@@ -143,8 +143,8 @@ public class AddBorrowActivity extends AppCompatActivity {
                 int month_x=cal.get(Calendar.MONTH);
                 int day_x=cal.get(Calendar.DAY_OF_MONTH);
                 int week_x=cal.get(Calendar.WEEK_OF_YEAR);
-                mydatabase.execSQL("INSERT INTO borrow(name,phone,amount,interest,date,day,month,year,comments) VALUES('"+nameString+"'," +
-                        "'"+phoneString+"',"+amtInt+","+interestInt+","+"'"+dateString+"',"+day_x+","+month_x+","+year_x+",'"+commentString+"');");
+                mydatabase.execSQL("INSERT INTO borrow(name,phone,amount,interest,date,day,month,year,comments,payday,paymonth,payyear,finalinterest) VALUES('"+nameString+"'," +
+                        "'"+phoneString+"',"+amtInt+","+interestInt+","+"'"+dateString+"',"+day_x+","+month_x+","+year_x+",'"+commentString+"',-1,-1,-1,0.0);");
                 Toast.makeText(this, "Success!", Toast.LENGTH_SHORT).show();
             }catch (SQLException e)
             {

@@ -1,5 +1,7 @@
 package com.hint.paranoid.aadharudhaar;
 
+import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.SQLException;
@@ -9,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -16,10 +19,14 @@ import android.widget.Toast;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 public class EditBorrowActivity extends AppCompatActivity {
-    EditText nametv,amttv,phonetv,interesttv,commenttv,datetv;
+    EditText nametv,amttv,phonetv,interesttv,commenttv;
     private int position;
+    TextView datetv;
+    int year_x,month_x,day_x,week_x,curr_year,curr_month,curr_day;
+    private TextView result_tv;
     //private EditText name,phone,amt,interest,comment,date;
     private TextView datex;
     private int amtInt, interestInt;
@@ -28,17 +35,68 @@ public class EditBorrowActivity extends AppCompatActivity {
     Cursor resultSet;
     Button updateButton;
     int flag=0;
+    Button btn;
+    static final int DIALOG_ID=0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_borrow);
         loadTextViews();
+
+        final Calendar cal = Calendar.getInstance();
+        curr_year=year_x=cal.get(Calendar.YEAR);
+        curr_month=month_x=cal.get(Calendar.MONTH) ;
+        curr_day=day_x=cal.get(Calendar.DAY_OF_MONTH);
+        week_x=cal.get(Calendar.WEEK_OF_YEAR);
+        result_tv=(TextView)findViewById(R.id.date_borrow_edit);
+        showDialogOnButtonClick();
+
         position = Integer.parseInt(getIntent().getExtras().getString("position"));
         DBConnect();
         displayData();
         update();
     }
+    public void showDialogOnButtonClick(){
+        btn = (Button)findViewById(R.id.cal_borrow_edit);
+        btn.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        showDialog(DIALOG_ID);
+                    }
+                }
+
+        );
+    }
+    @Override
+    protected Dialog onCreateDialog(int id){
+        if(id==DIALOG_ID){
+            return new DatePickerDialog(this,dpickerListner,year_x,month_x,day_x);
+
+        }
+        return null;
+    }
+
+    private DatePickerDialog.OnDateSetListener dpickerListner
+            = new DatePickerDialog.OnDateSetListener() {
+
+        @Override
+        public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+            year_x=year;
+            month_x=monthOfYear ;
+            day_x=dayOfMonth;
+            Calendar c =new GregorianCalendar();
+            c.set(Calendar.YEAR,year_x);
+            c.set(Calendar.MONTH,monthOfYear);
+            c.set(Calendar.DAY_OF_MONTH,day_x);
+            week_x = c.get(Calendar.WEEK_OF_YEAR);
+            Toast.makeText(EditBorrowActivity.this, day_x + "/" + month_x + "/" + year_x + "/" + week_x, Toast.LENGTH_LONG).show();
+            result_tv.setText(day_x + "/" + (month_x+1) + "/" + year_x);
+
+            //duedate=(String)result_tv.getText();
+        }
+    };
     private void displayData() {
         try{
             resultSet = mydatabase.rawQuery("SELECT * FROM borrow WHERE id = "+position+ ";", null);
@@ -48,14 +106,15 @@ public class EditBorrowActivity extends AppCompatActivity {
             String phone = resultSet.getString(2);
             String  amount = Integer.toString(resultSet.getInt(3));
             String interest = Integer.toString(resultSet.getInt(4));
-            String date = resultSet.getString(5);
+           String date = resultSet.getString(5);
             String comments = resultSet.getString(9);
             nametv.setText(name);
             phonetv.setText(phone);
             amttv.setText(amount);
             interesttv.setText(interest);
             commenttv.setText(comments);
-            datetv.setText(date);
+            result_tv.setText(date);
+           // datetv.setText(date);
         } catch(SQLException e)
         {
             Toast.makeText(this, "failed to display.", Toast.LENGTH_SHORT).show();
@@ -69,7 +128,7 @@ public class EditBorrowActivity extends AppCompatActivity {
         amttv = (EditText) findViewById(R.id.amt_borrow_edit);
         interesttv = (EditText) findViewById(R.id.interest_borrow_edit);
         commenttv = (EditText) findViewById(R.id.comments_borrow_edit);
-        datetv = (EditText) findViewById(R.id.date_borrow_edit);
+        //datetv = (TEx) findViewById(R.id.date_borrow_edit);
     }
     private void DBConnect() {
         mydatabase = openOrCreateDatabase("MoneyDB",MODE_PRIVATE,null);
@@ -143,7 +202,7 @@ public class EditBorrowActivity extends AppCompatActivity {
         }
         if(!isDateValid(dateString))
         {
-            //Toast.makeText(this, "4", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "due date has passed!", Toast.LENGTH_SHORT).show();
             return false;
         }
 
@@ -152,17 +211,18 @@ public class EditBorrowActivity extends AppCompatActivity {
     }
     public boolean isDateValid(String date)
     {
-        try {
-            DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
-            df.setLenient(false);
-            df.parse(date);
-            return true;
-        } catch (ParseException e) {
-            return false;
-        } catch (java.text.ParseException e) {
-            e.printStackTrace();
-            return false;
+
+        if(year_x==curr_year){
+            if(month_x==curr_month){
+                if(day_x<curr_day){
+                    return false;
+                }
+            }else if(month_x<curr_month)
+                return false;
         }
+        else if(year_x<curr_year)
+            return false;
+        return true;
     }
     private void getInput()
     {
@@ -177,6 +237,6 @@ public class EditBorrowActivity extends AppCompatActivity {
         if(!interestString.equals(""))
             interestInt = Integer.parseInt(interestString);
         commentString = commenttv.getText().toString();
-        dateString = datetv.getText().toString();
+       // dateString = datetv.getText().toString();
     }
 }

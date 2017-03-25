@@ -62,7 +62,7 @@ public class BorrowActivity extends AppCompatActivity {
     }
     private void createList() {
         try {
-            resultSet = mydatabase.rawQuery("SELECT * FROM borrow;", null);
+            resultSet = mydatabase.rawQuery("SELECT * FROM borrow WHERE payday=-1;", null);
             if(resultSet.moveToFirst())
             {
                 do{

@@ -73,7 +73,7 @@ public class LendActivity extends AppCompatActivity  {
 
     private void createList() {
         try {
-                resultSet = mydatabase.rawQuery("SELECT * FROM lend;", null);
+                resultSet = mydatabase.rawQuery("SELECT * FROM lend WHERE payday=-1;", null);
             if(resultSet.moveToFirst())
             {
                 do{

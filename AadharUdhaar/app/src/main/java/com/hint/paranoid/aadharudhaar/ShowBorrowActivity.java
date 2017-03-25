@@ -71,6 +71,8 @@ public class ShowBorrowActivity extends AppCompatActivity {
                     e.printStackTrace();
                     Toast.makeText(getApplicationContext(), "database query failed", Toast.LENGTH_SHORT).show();
                 }
+                Intent intent = new Intent(ShowBorrowActivity.this,MainActivity.class);
+                startActivity(intent);
             }
         });
 

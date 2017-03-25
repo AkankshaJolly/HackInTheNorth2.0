@@ -234,6 +234,7 @@
                 />
             <Button
                 android:id="@+id/call_lend"
+                android:onClick="Call"
                 android:textColor="#fff"
                 android:background="@drawable/button_custom"
                 android:layout_width="0dp"

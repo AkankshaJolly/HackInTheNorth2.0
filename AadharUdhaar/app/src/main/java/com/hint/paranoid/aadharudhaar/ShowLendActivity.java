@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.telephony.SmsManager;
@@ -31,6 +32,9 @@ public class ShowLendActivity extends AppCompatActivity {
     String phoneNo;
     int id,month,year;
     String sms_text="Reminder: You owe me ";
+    private int MY_PERMISSIONS_REQUEST_SMS=123;
+    private int MY_PERMISSIONS_REQUEST_CALL=124;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -102,8 +106,38 @@ public class ShowLendActivity extends AppCompatActivity {
                     e.printStackTrace();
                     Toast.makeText(getApplicationContext(), "database query failed", Toast.LENGTH_SHORT).show();
                 }
+                Intent intent = new Intent(ShowLendActivity.this,MainActivity.class);
+                startActivity(intent);
+
+
             }
         });
+
+        if (ContextCompat.checkSelfPermission(ShowLendActivity.this,
+                Manifest.permission.SEND_SMS)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            // Should we show an explanation?
+            if (ActivityCompat.shouldShowRequestPermissionRationale(ShowLendActivity.this,
+                    Manifest.permission.SEND_SMS)) {
+            } else {
+                ActivityCompat.requestPermissions(ShowLendActivity.this,
+                        new String[]{Manifest.permission.SEND_SMS},
+                        MY_PERMISSIONS_REQUEST_SMS);
+            }
+        }
+
+        if (ContextCompat.checkSelfPermission(ShowLendActivity.this,
+                Manifest.permission.CALL_PHONE)
+                != PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(ShowLendActivity.this,
+                    Manifest.permission.CALL_PHONE)) {
+            } else {
+                ActivityCompat.requestPermissions(ShowLendActivity.this,
+                        new String[]{Manifest.permission.CALL_PHONE},
+                        MY_PERMISSIONS_REQUEST_CALL);
+            }
+        }
 
 
 
@@ -177,4 +211,23 @@ public class ShowLendActivity extends AppCompatActivity {
         }
         startActivity(call);
     }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+
+        if(requestCode==MY_PERMISSIONS_REQUEST_SMS) {
+            if (grantResults.length > 0
+                    && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(getBaseContext(),"PERMISSION GRANTED",Toast.LENGTH_SHORT).show();
+
+            } else {
+
+                Toast.makeText(getBaseContext(),"PERMISSION NOT GRANTED",Toast.LENGTH_SHORT).show();
+            }
+            return;
+        }
+
+    }
+
 }
