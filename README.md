@@ -24,8 +24,19 @@ This application is useful for people who run businesses like canteens, general 
 
 # Development Platform
  Android Studio
+ # How to use
+ 1. run the apk attached
+ 2. compile the gradle project in android studio
  
  # ScreenShots
  
  <img src="https://github.com/jatin96/HackInTheNorth2.0/blob/master/Screenshot_2015-06-21-09-15-00-661.jpeg" height="400" alt="Screenshot"/> <img src="https://github.com/jatin96/HackInTheNorth2.0/blob/master/Screenshot_2015-06-21-09-17-42-078.jpeg" height="400" alt="Screenshot"/>   <img src="https://github.com/jatin96/HackInTheNorth2.0/blob/master/Screenshot_2015-06-21-09-18-28-208.jpeg" height="400" alt="Screenshot"/> 
+ <img src="https://github.com/jatin96/HackInTheNorth2.0/blob/master/Screenshot_20170325-085045.png" height="400" alt="Screenshot"/> 
+ <img src="https://github.com/jatin96/HackInTheNorth2.0/blob/master/Screenshot_20170325-085050.png" height="400" alt="Screenshot"/> 
+ <img src="https://github.com/jatin96/HackInTheNorth2.0/blob/master/Screenshot_20170325-091036.png" height="400" alt="Screenshot"/> 
+ <img src="https://github.com/jatin96/HackInTheNorth2.0/blob/master/Screenshot_20170325-091041.png" height="400" alt="Screenshot"/> 
+ <img src="https://github.com/jatin96/HackInTheNorth2.0/blob/master/Screenshot_20170325-091310.png" height="400" alt="Screenshot"/>
+ <img src="https://github.com/jatin96/HackInTheNorth2.0/blob/master/Screenshot_20170325-091353.png" height="400" alt="Screenshot"/>
+ <img src="https://github.com/jatin96/HackInTheNorth2.0/blob/master/Screenshot_20170325-091408.png" height="400" alt="Screenshot"/>
+ 
  
