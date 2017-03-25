@@ -1,30 +1,46 @@
 package com.hint.paranoid.aadharudhaar;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.telephony.SmsManager;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.util.Calendar;
 
 public class ShowLendActivity extends AppCompatActivity {
     private int position;
     SQLiteDatabase mydatabase;
     Cursor resultSet;
     TextView nametv,amttv,phonetv,interesttv,uidtv,addrtv,statetv,commenttv,pintv,datetv;
+    Button call,sms,paid;
+    String phoneNo;
+    int id,month,year;
+    String sms_text="Reminder: You owe me ";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_lend);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        //Buttons starts
+        call=(Button)findViewById(R.id.call_lend);
+        sms=(Button)findViewById(R.id.sms_lend);
+        paid=(Button)findViewById(R.id.paid_lend);
         position = Integer.parseInt(getIntent().getExtras().getString("position"))+1;
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -39,6 +55,56 @@ public class ShowLendActivity extends AppCompatActivity {
         loadTextViews();
         DBConnect();
         displayData();
+        sms.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                phoneNo = phonetv.getText().toString();
+                sms_text = sms_text + amttv.getText().toString() + " (with interest if applicable).Your due date is " + datetv.getText().toString() + ".";
+                try {
+                    SmsManager smsManager = SmsManager.getDefault();
+                    smsManager.sendTextMessage(phoneNo, null, sms_text.toString(), null, null);
+
+                    Toast.makeText(getApplicationContext(), "SMS Sent!",
+                            Toast.LENGTH_LONG).show();
+                } catch (Exception e) {
+                    Toast.makeText(getApplicationContext(),
+                            "SMS failed, please try again later!",
+                            Toast.LENGTH_LONG).show();
+                    e.printStackTrace();
+                }
+            }
+        });
+        paid.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                int princi=(Integer.parseInt(amttv.getText().toString()));
+                final Calendar cal = Calendar.getInstance();
+                int year_x = cal.get(Calendar.YEAR);
+                int month_x = cal.get(Calendar.MONTH);
+                int day_x=cal.get(Calendar.DAY_OF_MONTH);
+                //String paydate=day_x+"/"+month_x+"/"+year_x;
+                int rate=resultSet.getInt(4);
+                int totalmon;
+                if(year==year_x)
+                    totalmon=month_x-month;
+                else
+                {
+                    totalmon=(12-month)+month_x+(year_x-year-1)*12;
+                }
+                double interest=(princi*rate*totalmon)*1.0/100;
+                try{
+                    mydatabase.execSQL("UPDATE lend SET payday="+day_x+",paymonth="+month_x+",payyear="+year_x+",finalinterest="+interest+" where id="+id+ " ;");
+                    Toast.makeText(getApplicationContext(), "Success!", Toast.LENGTH_SHORT).show();
+                }catch (SQLException e)
+                {
+                    e.printStackTrace();
+                    Toast.makeText(getApplicationContext(), "database query failed", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
 
 
     }
@@ -60,12 +126,17 @@ public class ShowLendActivity extends AppCompatActivity {
         try{
             resultSet = mydatabase.rawQuery("SELECT * FROM lend WHERE id = "+position+ ";", null);
             resultSet.moveToFirst();
+            id=resultSet.getInt(0);
             //Toast.makeText(this, Integer.toString(row_num), Toast.LENGTH_SHORT).show();
             String name = resultSet.getString(1);
             String phone = resultSet.getString(2);
             String  amount = Integer.toString(resultSet.getInt(3));
             String interest = Integer.toString(resultSet.getInt(4));
             String date = resultSet.getString(5);
+
+            month=resultSet.getInt(7);
+            year=resultSet.getInt(8);
+
             String comments = resultSet.getString(9);
             String uid = resultSet.getString(10);
             String address = resultSet.getString(11);
@@ -91,5 +162,19 @@ public class ShowLendActivity extends AppCompatActivity {
     private void DBConnect() {
         mydatabase = openOrCreateDatabase("MoneyDB",MODE_PRIVATE,null);
     }
-
+    public void Call(View v){
+        Intent call = new Intent(Intent.ACTION_CALL);
+        call.setData(Uri.parse("tel:" + phonetv.getText().toString()));
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+        startActivity(call);
+    }
 }

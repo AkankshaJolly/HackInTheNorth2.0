@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
 import android.net.ParseException;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -61,6 +62,8 @@ public class AddLendActivity extends AppCompatActivity {
         curr_month=month_x=cal.get(Calendar.MONTH) ;
         curr_day=day_x=cal.get(Calendar.DAY_OF_MONTH);
         week_x=cal.get(Calendar.WEEK_OF_YEAR);
+        result_tv=(TextView)findViewById(R.id.date_lend);
+        showDialogOnButtonClick();
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -95,6 +98,7 @@ public class AddLendActivity extends AppCompatActivity {
             }
         });
     }
+
 
     private void grantPermissionForCamera() {
 
@@ -167,14 +171,31 @@ public class AddLendActivity extends AppCompatActivity {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        Toast.makeText(this, "Aadhaar details recieved", Toast.LENGTH_SHORT).show();
+        name.setTextColor(Color.rgb(30,136,229));
         name.setText(name_scan);
+        uid.setTextColor(Color.rgb(30,136,229));
         uid.setText(uid_scan);
+        addr.setTextColor(Color.rgb(30,136,229));
         addr.setText(address_scan);
+        state.setTextColor(Color.rgb(30,136,229));
         state.setText(state_scan);
+        pin.setTextColor(Color.rgb(30,136,229));
         pin.setText(pincode_scan);
 
     }
+    public void showDialogOnButtonClick(){
+        btn = (Button)findViewById(R.id.cal_lend);
+        btn.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        showDialog(DIALOG_ID);
+                    }
+                }
 
+        );
+    }
     @Override
     protected Dialog onCreateDialog(int id){
         if(id==DIALOG_ID){
@@ -183,6 +204,7 @@ public class AddLendActivity extends AppCompatActivity {
         }
         return null;
     }
+
     private DatePickerDialog.OnDateSetListener dpickerListner
             = new DatePickerDialog.OnDateSetListener() {
 
@@ -197,7 +219,8 @@ public class AddLendActivity extends AppCompatActivity {
             c.set(Calendar.DAY_OF_MONTH,day_x);
             week_x = c.get(Calendar.WEEK_OF_YEAR);
             Toast.makeText(AddLendActivity.this, day_x + "/" + month_x + "/" + year_x + "/" + week_x, Toast.LENGTH_LONG).show();
-            result_tv.setText(day_x + "/" + month_x + "/" + year_x);
+            result_tv.setText(day_x + "/" + (month_x+1) + "/" + year_x);
+
             //duedate=(String)result_tv.getText();
         }
     };
@@ -205,7 +228,7 @@ public class AddLendActivity extends AppCompatActivity {
     {
         mydatabase = openOrCreateDatabase("MoneyDB", MODE_PRIVATE, null);
         mydatabase.execSQL("CREATE TABLE IF NOT EXISTS " +
-                "lend(id INTEGER PRIMARY KEY AUTOINCREMENT,name varchar NOT NULL,phone varchar NOT NULL,amount integer NOT NULL,interest integer,date varchar NOT NULL,day integer,month integer,year integer,comments varchar,uid varchar,address varchar,state varchar,pin integer);");
+                "lend(id INTEGER PRIMARY KEY AUTOINCREMENT,name varchar NOT NULL,phone varchar NOT NULL,amount integer NOT NULL,interest integer,date varchar NOT NULL,day integer,month integer,year integer,comments varchar,uid varchar,address varchar,state varchar,pin integer,payday integer,paymonth integer,payyear integer,finalinterest double);");
     }
     private void loadTextViews()
     {
@@ -218,7 +241,7 @@ public class AddLendActivity extends AppCompatActivity {
         addr = (EditText) findViewById(R.id.address);
         state = (EditText) findViewById(R.id.state);
         pin = (EditText) findViewById(R.id.postal);
-        date = (EditText) findViewById(R.id.date_lend);
+        //date = (TextView) findViewById(R.id.date_lend);
     }
     private void getInput()
     {
@@ -239,7 +262,7 @@ public class AddLendActivity extends AppCompatActivity {
         pinString = pin.getText().toString();
         if(!pinString.equals(""))
         pinInt = Integer.parseInt(pinString);
-        dateString = date.getText().toString();
+        dateString = result_tv.getText().toString();
         //Toast.makeText(this, nameString, Toast.LENGTH_SHORT).show();
        // Toast.makeText(this, Integer.toString(amtInt), Toast.LENGTH_SHORT).show();
       //  Toast.makeText(this, dateString, Toast.LENGTH_SHORT).show();
@@ -255,8 +278,8 @@ public class AddLendActivity extends AppCompatActivity {
                 int day_x=cal.get(Calendar.DAY_OF_MONTH);
                 int week_x=cal.get(Calendar.WEEK_OF_YEAR);
                 Toast.makeText(this, dateString, Toast.LENGTH_SHORT).show();
-                mydatabase.execSQL("INSERT INTO lend(name,phone,amount,interest,date,day,month,year,comments,uid,address,state,pin) VALUES('"+nameString+"'," +
-                        "'"+phoneString+"',"+amtInt+","+interestInt+",'"+dateString+"',"+day_x+","+month_x+","+year_x+",'"+commentString+"','"+uidString+"','"+addrString+"','"+stateString+"',"+pinInt+");");
+                mydatabase.execSQL("INSERT INTO lend(name,phone,amount,interest,date,day,month,year,comments,uid,address,state,pin,payday,paymonth,payyear,interest) VALUES('"+nameString+"'," +
+                        "'"+phoneString+"',"+amtInt+","+interestInt+",'"+dateString+"',"+day_x+","+month_x+","+year_x+",'"+commentString+"','"+uidString+"','"+addrString+"','"+stateString+"',"+pinInt+",-1,-1,-1,0.0);");
                 Toast.makeText(this, "Success!", Toast.LENGTH_SHORT).show();
                 Toast.makeText(this, dateString, Toast.LENGTH_SHORT).show();
             }catch (SQLException e)
@@ -303,7 +326,7 @@ public class AddLendActivity extends AppCompatActivity {
         }
         if(!isDateValid(dateString))
         {
-            //Toast.makeText(this, "4", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Due Date has passed!", Toast.LENGTH_SHORT).show();
             return false;
         }
         if(!uidString.equals("") && uidString.length()!=12)

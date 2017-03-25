@@ -1,5 +1,7 @@
 package com.hint.paranoid.aadharudhaar;
 
+import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.content.Intent;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
@@ -11,6 +13,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -18,14 +21,15 @@ import android.widget.Toast;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 public class AddBorrowActivity extends AppCompatActivity {
-    private EditText name,phone,amt,interest,comment,date;
-    private TextView datex;
+    private EditText name,phone,amt,interest,comment;
+    private TextView datex,date;
     private String nameString,phoneString,commentString,dateString,amtString,interestString;
     private int amtInt, interestInt;
     SQLiteDatabase mydatabase;
-    int year_x,month_x,day_x,week_x;
+    int year_x,month_x,day_x,week_x,curr_year,curr_month,curr_day;
     private Button save;
     int flag=0;
 
@@ -37,13 +41,14 @@ public class AddBorrowActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         loadTextViews();
         createDB();
-       /* final Calendar cal = Calendar.getInstance();
-        year_x=cal.get(Calendar.YEAR);
-        month_x=cal.get(Calendar.MONTH) ;
-        day_x=cal.get(Calendar.DAY_OF_MONTH);
+        final Calendar cal = Calendar.getInstance();
+        curr_year=year_x=cal.get(Calendar.YEAR);
+        curr_month=month_x=cal.get(Calendar.MONTH) ;
+        curr_day=day_x=cal.get(Calendar.DAY_OF_MONTH);
 
-        datex=(TextView)findViewById(R.id.date);
-        showDialogOnButtonClick();*/
+        datex=(TextView)findViewById(R.id.date_borrow);
+        showDialogOnButtonClick();
+        save = (Button) findViewById(R.id.save_borrow);
         save = (Button) findViewById(R.id.save_borrow);
         save.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -57,8 +62,7 @@ public class AddBorrowActivity extends AppCompatActivity {
             }
         });
     }
-    /*
-     Button btn;
+    Button btn;
     static final int DIALOG_ID=0;
     public void showDialogOnButtonClick(){
         btn = (Button)findViewById(R.id.cal);
@@ -72,7 +76,7 @@ public class AddBorrowActivity extends AppCompatActivity {
 
         );
     }
-     @Override
+    @Override
     protected Dialog onCreateDialog(int id){
         if(id==DIALOG_ID){
             return new DatePickerDialog(this,dpickerListner,year_x,month_x,day_x);
@@ -95,16 +99,15 @@ public class AddBorrowActivity extends AppCompatActivity {
             c.set(Calendar.DAY_OF_MONTH,day_x);
             week_x = c.get(Calendar.WEEK_OF_YEAR);
             Toast.makeText(AddBorrowActivity.this, day_x + "/" + month_x + "/" + year_x + "/" + week_x, Toast.LENGTH_LONG).show();
-            datex.setText(day_x + "/" + month_x + "/" + year_x);
+            datex.setText(day_x + "/" + (month_x+1) + "/" + year_x);
             //duedate=(String)result_tv.getText();
         }
     };
-     */
 
     private void createDB() {
         mydatabase = openOrCreateDatabase("MoneyDB", MODE_PRIVATE, null);
         mydatabase.execSQL("CREATE TABLE IF NOT EXISTS " +
-                "borrow(id INTEGER PRIMARY KEY AUTOINCREMENT,name varchar NOT NULL,phone varchar NOT NULL,amount integer NOT NULL,interest integer,date varchar NOT NULL,day integer,month integer,year integer,comments varchar);");
+                "borrow(id INTEGER PRIMARY KEY AUTOINCREMENT,name varchar NOT NULL,phone varchar NOT NULL,amount integer NOT NULL,interest integer,date varchar NOT NULL,day integer,month integer,year integer,comments varchar,payday integer,paymonth integer,payyear integer,finalinterest double);");
     }
 
     private void loadTextViews() {
@@ -113,7 +116,7 @@ public class AddBorrowActivity extends AppCompatActivity {
         amt = (EditText) findViewById(R.id.amt_borrow);
         interest = (EditText) findViewById(R.id.interest_borrow);
         comment = (EditText) findViewById(R.id.comments_borrow);
-        date = (EditText) findViewById(R.id.date_borrow);
+        date = (TextView) findViewById(R.id.date_borrow);
     }
     private void getInput()
     {
@@ -181,7 +184,7 @@ public class AddBorrowActivity extends AppCompatActivity {
         }
         if(!isDateValid(dateString))
         {
-            //Toast.makeText(this, "4", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Due Date has passed!", Toast.LENGTH_SHORT).show();
             return false;
         }
 
@@ -190,7 +193,7 @@ public class AddBorrowActivity extends AppCompatActivity {
     }
     public boolean isDateValid(String date)
     {
-        try {
+        /*try {
             DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
             df.setLenient(false);
             df.parse(date);
@@ -200,7 +203,17 @@ public class AddBorrowActivity extends AppCompatActivity {
         } catch (java.text.ParseException e) {
             e.printStackTrace();
             return false;
+        }*/
+        if(year_x==curr_year){
+            if(month_x==curr_month){
+                if(day_x<curr_day){
+                    return false;
+                }
+            }else if(month_x<curr_month)
+                return false;
         }
+        else if(year_x<curr_year)
+            return false;
+        return true;
     }
-
 }

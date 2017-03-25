@@ -57,7 +57,7 @@ public class BorrowActivity extends AppCompatActivity {
     private void DBConnect() {
         mydatabase = openOrCreateDatabase("MoneyDB",MODE_PRIVATE,null);
         mydatabase.execSQL("CREATE TABLE IF NOT EXISTS " +
-                "borrow(id INTEGER PRIMARY KEY AUTOINCREMENT,name varchar NOT NULL,phone varchar NOT NULL,amount integer NOT NULL,interest integer,date varchar NOT NULL,day integer,month integer,year integer,comments varchar,uid varchar,address varchar,state varchar,pin integer);");
+                "borrow(id INTEGER PRIMARY KEY AUTOINCREMENT,name varchar NOT NULL,phone varchar NOT NULL,amount integer NOT NULL,interest integer,date varchar NOT NULL,day integer,month integer,year integer,comments varchar,payday integer,paymonth integer,payyear integer,finalinterest double);");
 
     }
     private void createList() {

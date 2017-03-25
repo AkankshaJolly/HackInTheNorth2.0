@@ -1,5 +1,8 @@
 package com.hint.paranoid.aadharudhaar;
 
+import android.database.Cursor;
+import android.database.SQLException;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.view.GestureDetectorCompat;
@@ -19,12 +22,16 @@ import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ColorTemplate;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 //import com.github.mikephil.charting.utils.Highlight;
 
 
 public class piechart extends AppCompatActivity implements OnChartValueSelectedListener {
     private GestureDetectorCompat gestureDetectorCompat;
+    SQLiteDatabase mydatabase;
+    Cursor resultset,resultset2;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,16 +39,71 @@ public class piechart extends AppCompatActivity implements OnChartValueSelectedL
         PieChart pieChart = (PieChart) findViewById(R.id.piechart);
         pieChart.setUsePercentValues(true);
         gestureDetectorCompat = new GestureDetectorCompat(this, new MyGestureListener());
+        mydatabase = openOrCreateDatabase("MoneyDB", MODE_PRIVATE, null);
         // IMPORTANT: In a PieChart, no values (Entry) should have the same
         // xIndex (even if from different DataSets), since no values can be
         // drawn above each other.
+        final Calendar cal = Calendar.getInstance();
+        int curr_year = cal.get(Calendar.YEAR);
+        try {
+
+            resultset= mydatabase.rawQuery("SELECT month,SUM(finalinterest) FROM lend WHERE year="+curr_year+" AND paymonth!=-1 GROUP BY paymonth ;",null);
+            Log.d("check1", resultset.getCount() + "");
+
+            Toast.makeText(this, "Success!", Toast.LENGTH_SHORT).show();
+        }catch (SQLException e)
+        {
+            e.printStackTrace();
+            Toast.makeText(this, "database query failed", Toast.LENGTH_SHORT).show();
+        }
+        try {
+
+            resultset2= mydatabase.rawQuery("SELECT month,SUM(finalinterest) FROM borrow WHERE year="+curr_year+" AND paymonth!=-1 GROUP BY paymonth ;",null);
+            Log.d("check2", resultset2.getCount() + "");
+
+            Toast.makeText(this, "Success!", Toast.LENGTH_SHORT).show();
+        }catch (SQLException e)
+        {
+            e.printStackTrace();
+            Toast.makeText(this, "database query failed", Toast.LENGTH_SHORT).show();
+        }
         ArrayList<Entry> yvalues = new ArrayList<Entry>();
-        yvalues.add(new Entry(8f, 0));
-        yvalues.add(new Entry(15f, 1));
-        yvalues.add(new Entry(12f, 2));
-        yvalues.add(new Entry(25f, 3));
-        yvalues.add(new Entry(23f, 4));
-        yvalues.add(new Entry(17f, 5));
+
+        int hash[]=new int[12];
+        if(resultset.moveToFirst())
+        {
+            do{
+                int mn=resultset.getInt(0);
+                int cnt=resultset.getInt(1);
+                Log.d("check","mon="+mn+"count="+cnt);
+                hash[mn]=cnt;
+                // entries.add(new Entry(cnt, mn));
+            }while(resultset.moveToNext());
+        }
+        if(resultset2.moveToFirst())
+        {
+            do{
+                int mn=resultset2.getInt(0);
+                int cnt=resultset2.getInt(1);
+                Log.d("check","mon="+mn+"count="+cnt);
+                hash[mn]=-cnt;
+                // entries.add(new Entry(cnt, mn));
+            }while(resultset2.moveToNext());
+        }
+        ArrayList<Integer> colors = new ArrayList<Integer>();
+        for(int i=0;i<12;i++)
+        {
+            if(hash[i]<0) {
+                colors.add(Color.rgb(192, 0, 0));
+                yvalues.add(new Entry(-hash[i], i));
+            }
+            else{
+                colors.add(Color.rgb(0,255,0));
+                yvalues.add(new Entry(hash[i], i));
+            }
+
+        }
+
 
         PieDataSet dataSet = new PieDataSet(yvalues, "Election Results");
 
@@ -53,17 +115,23 @@ public class piechart extends AppCompatActivity implements OnChartValueSelectedL
         xVals.add("April");
         xVals.add("May");
         xVals.add("June");
+        xVals.add("July");
+        xVals.add("August");
+        xVals.add("September");
+        xVals.add("October");
+        xVals.add("November");
+        xVals.add("December");
 
         PieData data = new PieData(xVals, dataSet);
         data.setValueFormatter(new PercentFormatter());
         pieChart.setData(data);
-        pieChart.setDescription("This is Pie Chart");
+        pieChart.setDescription("Monthly profit/loss");
 
         pieChart.setDrawHoleEnabled(true);
         pieChart.setTransparentCircleRadius(25f);
         pieChart.setHoleRadius(25f);
 
-        dataSet.setColors(ColorTemplate.VORDIPLOM_COLORS);
+        dataSet.setColors(colors);
         data.setValueTextSize(13f);
         data.setValueTextColor(Color.DKGRAY);
         pieChart.setOnChartValueSelectedListener(this);

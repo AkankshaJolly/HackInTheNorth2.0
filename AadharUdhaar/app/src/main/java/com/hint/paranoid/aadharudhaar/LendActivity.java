@@ -67,8 +67,8 @@ public class LendActivity extends AppCompatActivity  {
     }
     private void DBConnect() {
         mydatabase = openOrCreateDatabase("MoneyDB",MODE_PRIVATE,null);
-        //mydatabase.execSQL("CREATE TABLE IF NOT EXISTS " +
-              //  "lend(id INTEGER PRIMARY KEY AUTOINCREMENT,name varchar NOT NULL,phone varchar NOT NULL,amount integer NOT NULL,interest integer,date varchar NOT NULL,day integer,month integer,year integer,comments varchar,uid varchar,address varchar,state varchar,pin integer);");
+        mydatabase.execSQL("CREATE TABLE IF NOT EXISTS " +
+                "lend(id INTEGER PRIMARY KEY AUTOINCREMENT,name varchar NOT NULL,phone varchar NOT NULL,amount integer NOT NULL,interest integer,date varchar NOT NULL,day integer,month integer,year integer,comments varchar,uid varchar,address varchar,state varchar,pin integer,payday integer,paymonth integer,payyear integer,finalinterest double);");
     }
 
     private void createList() {
@@ -85,7 +85,8 @@ public class LendActivity extends AppCompatActivity  {
                     arrayList.add(new RowData(name,amt,dd));
                 }while(resultSet.moveToNext());
                 lview = (ListView) findViewById(R.id.lendList);
-                ListViewAdapter adapter = new ListViewAdapter(this, arrayList,1);
+                ListViewAdapter adapter = new ListViewAdapter(this, arrayList,1
+                );
                 lview.setAdapter(adapter);
             }
         }
