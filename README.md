@@ -27,5 +27,5 @@ This application is useful for people who run businesses like canteens, general 
  
  # ScreenShots
  
- <img src="https://github.com/jatin96/HackInTheNorth2.0/blob/master/Screenshot_2015-06-21-09-15-00-661.jpeg" height="400" alt="Screenshot"/> <img src="https://github.com/jatin96/HackInTheNorth2.0/blob/master/Screenshot_2015-06-21-09-17-42-078.jpeg" height="400" alt="Screenshot"/> <img src="https://github.com/jatin96/Attendance-Manager/blob/master/Screenshot_20170114-173011.png" height="400" alt="Screenshot"/>  <img src="https://github.com/jatin96/HackInTheNorth2.0/blob/master/Screenshot_2015-06-21-09-18-28-208.jpeg" height="400" alt="Screenshot"/> 
+ <img src="https://github.com/jatin96/HackInTheNorth2.0/blob/master/Screenshot_2015-06-21-09-15-00-661.jpeg" height="400" alt="Screenshot"/> <img src="https://github.com/jatin96/HackInTheNorth2.0/blob/master/Screenshot_2015-06-21-09-17-42-078.jpeg" height="400" alt="Screenshot"/>   <img src="https://github.com/jatin96/HackInTheNorth2.0/blob/master/Screenshot_2015-06-21-09-18-28-208.jpeg" height="400" alt="Screenshot"/> 
  
