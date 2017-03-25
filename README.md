@@ -14,16 +14,16 @@ We are trying to revolutionise the concept of the prevalent pen-paper borrow-len
 This application is useful for people who run businesses like canteens, general stores and many other vendors who face problems when their customers buy stuff and decide to pay later. In such cases, they usually maintain a record of the customer transactions on paper. This method is susceptible to many fraudulent cases like fake identiy of customers, impersonation of a person with someone else's name, etc. Our application eradiactes this problem by authenticating the customers through Aadhaar Card (which is unique for every person and cannot be duplicated) and fetching all the relevant details about the customer - hence removing the hassle of maintaining a physical register for a "COMMON MAN" .
 
 
-# Features (tentative)
+# Features 
 1. Aadhaar Card QR Scanner.
 2. Database entries for a borrow/lend operation.
-2. Notification reminders after specific intervals of time.
 3. Saving Aadhaar Card photo in the application.
 4. SMS / CALL feature in case of deadline crossed.
-5. Importing users from contacts.
 6. Material design user interface.
 7. Statistics in the form of graphs.
 
-
 # Development Platform
  Android Studio
+ 
+ # ScreenShots
+ 
